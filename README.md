@@ -6,7 +6,7 @@ While Chargee already offers a local API with their firmware and a HA integratio
 
 The device internally contains an fully flashable **ESPRESSIF ESP32-C3-MINI-1**, has native USB connected to the USB-C connector, and can be flashed directly without adding an external programmer.\
 \
-Tested with Sparky 3 v2. Other hardware revisions have not been tested.
+Tested with Sparky 3 v2 on Dutch ESMR 5.0 meter. Other hardware revisions have not been tested.
 
 ---
 
