@@ -1,5 +1,7 @@
 # Chargee Sparky P1 — ESPHome Local Firmware
 
+<img width="3072" height="2038" alt="IMG_20260924_191359015" src="https://github.com/user-attachments/assets/1f7e172a-9191-4f00-8bf4-b77087200b27" />
+
 Replacement firmware for the **Chargee Sparky P1** energy monitor for fully offline local integration with ESPHome and Home Assistant.\
 While Chargee already offers a local API with their firmware and a HA integration, the Sparky itself still depends on an active internet connection. 
 
