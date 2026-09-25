@@ -90,11 +90,11 @@ The firmware currently exposes:
 (this is to disable the always-on green led during normal operation) 
 
 
-# Reverse-engineering notes
+## Reverse-engineering notes
 
 While I was able to reverse engineer the RX pin and the RGB pins, not everything is known yet
 
-## Confirmed
+### Confirmed
 
 - MCU: ESPRESSIF ESP32-C3-MINI-1
 - GPIO18 = USB D−
@@ -107,13 +107,13 @@ While I was able to reverse engineer the RX pin and the RGB pins, not everything
 - Normal UART polarity
 - AMS1117 3.3 V regulator
 
-## Still under investigation
+### Still under investigation
 
 - Exact function of the IC labled "U3" (I suspect a level shifter 5v > 3v)
 - GPIO4 (suspected TX)
 
 
-# Credits
+## Credits
 
 This firmware is not affiliated with or endorsed by Chargee in any way. \
 But big shoudout to Chargee for making their device so open. The ESP was fully flash-able and in general they seem to have an open approach to their device given the local API and HA integrations they made themselves. 
