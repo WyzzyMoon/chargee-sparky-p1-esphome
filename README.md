@@ -4,6 +4,7 @@ Replacement firmware for the **Chargee Sparky P1** energy monitor for fully offl
 While Chargee already offers a local API with their firmware and a HA integration, the Sparky itself still depends on an active internet connection. 
 
 The device internally contains an fully flashable **ESPRESSIF ESP32-C3-MINI-1**, has native USB connected to the USB-C connector, and can be flashed directly without adding an external programmer.\
+/
 Tested with Sparky 3 v2 on Dutch ESMR 5.0 meter. Other hardware revisions have not been tested.
 
 
