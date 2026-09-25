@@ -8,7 +8,6 @@ The device internally contains an fully flashable **ESPRESSIF ESP32-C3-MINI-1**
 \
 Tested with Sparky 3 v2 on Dutch ESMR 5.0 meter. Other hardware revisions have not been tested.
 
----
 
 ## What works:
 
@@ -25,7 +24,6 @@ Tested with Sparky 3 v2 on Dutch ESMR 5.0 meter. Other hardware revisions have n
 
 The P1 output. Sparky provides a P1 daisy chain option. This is not just a passive direct connection to the output port. I have not fully figured out how it works and only need the reading functionality myself. But keep in mind that you'll currently lose this functionality. 
 
----
 
 # Installation
 
@@ -49,7 +47,6 @@ The exact serial device name may differ on your system.\
 Create an Empty Configuration in ESPHome Device Builder, replace its YAML with `sparky-p1.yaml`, then compile and install it over USB.\
 
 
----
 
 # Home Assistant entities
 
@@ -93,7 +90,6 @@ The firmware currently exposes:
 
 (this is to disable the always-on green led during normal operation) 
 
----
 
 # Reverse-engineering notes
 
