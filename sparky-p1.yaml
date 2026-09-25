@@ -1,0 +1,229 @@
+esphome:
+  name: sparky-p1
+  friendly_name: Sparky P1
+
+  on_boot:
+    priority: 600
+    then:
+      - light.turn_off: status_rgb
+      - script.execute: status_blue
+
+esp32:
+  board: esp32-c3-devkitm-1
+  variant: esp32c3
+  framework:
+    type: esp-idf
+
+logger:
+  level: INFO
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  on_connect:
+    then:
+      - delay: 500ms
+      - script.execute: status_connected
+
+  on_disconnect:
+    then:
+      - script.execute: status_red
+
+api:
+
+ota:
+  - platform: esphome
+
+uart:
+  id: p1_uart
+  rx_pin:
+    number: GPIO10
+  baud_rate: 115200
+  data_bits: 8
+  parity: NONE
+  stop_bits: 1
+  rx_buffer_size: 2048
+
+dsmr:
+  id: dsmr_id
+  uart_id: p1_uart
+  crc_check: true
+  max_telegram_length: 1700
+
+output:
+  - platform: ledc
+    id: led_red
+    pin:
+      number: GPIO7
+      inverted: true
+    frequency: 1000Hz
+
+  - platform: ledc
+    id: led_green
+    pin:
+      number: GPIO6
+      inverted: true
+    frequency: 1000Hz
+
+  - platform: ledc
+    id: led_blue
+    pin:
+      number: GPIO5
+      inverted: true
+    frequency: 1000Hz
+
+light:
+  - platform: rgb
+    id: status_rgb
+    internal: true
+    red: led_red
+    green: led_green
+    blue: led_blue
+    restore_mode: ALWAYS_OFF
+    default_transition_length: 0s
+    flash_transition_length: 0s
+
+    effects:
+      - pulse:
+          name: "Booting"
+          transition_length: 500ms
+          update_interval: 500ms
+
+switch:
+  - platform: template
+    id: normal_green_led
+    name: "Normal Green LED"
+    icon: "mdi:led-on"
+    optimistic: true
+    restore_mode: RESTORE_DEFAULT_ON
+
+    on_turn_on:
+      then:
+        - if:
+            condition:
+              wifi.connected:
+            then:
+              - script.execute: status_green
+
+    on_turn_off:
+      then:
+        - if:
+            condition:
+              wifi.connected:
+            then:
+              - script.execute: status_off
+
+script:
+  - id: status_blue
+    then:
+      - light.turn_on:
+          id: status_rgb
+          red: 0%
+          green: 0%
+          blue: 100%
+          effect: "Booting"
+
+  - id: status_green
+    then:
+      - light.turn_on:
+          id: status_rgb
+          red: 0%
+          green: 100%
+          blue: 0%
+          effect: none
+
+  - id: status_off
+    then:
+      - light.turn_off: status_rgb
+
+  - id: status_connected
+    then:
+      - if:
+          condition:
+            switch.is_on: normal_green_led
+          then:
+            - script.execute: status_green
+          else:
+            - script.execute: status_off
+
+  - id: status_red
+    then:
+      - light.turn_on:
+          id: status_rgb
+          red: 100%
+          green: 0%
+          blue: 0%
+          effect: none
+
+sensor:
+  - platform: dsmr
+    energy_delivered_tariff1:
+      name: "Energy Imported Tariff 1"
+      icon: "mdi:transmission-tower-import"
+
+    energy_delivered_tariff2:
+      name: "Energy Imported Tariff 2"
+      icon: "mdi:transmission-tower-import"
+
+    energy_returned_tariff1:
+      name: "Energy Exported Tariff 1"
+      icon: "mdi:transmission-tower-export"
+
+    energy_returned_tariff2:
+      name: "Energy Exported Tariff 2"
+      icon: "mdi:transmission-tower-export"
+
+    power_delivered:
+      name: "Power Import"
+      icon: "mdi:flash"
+
+    power_returned:
+      name: "Power Export"
+      icon: "mdi:solar-power"
+
+    voltage_l1:
+      name: "Voltage L1"
+      icon: "mdi:sine-wave"
+
+    current_l1:
+      name: "Current L1"
+      icon: "mdi:current-ac"
+
+    power_delivered_l1:
+      name: "Power Import L1"
+      icon: "mdi:flash"
+
+    power_returned_l1:
+      name: "Power Export L1"
+      icon: "mdi:solar-power"
+
+    gas_delivered:
+      name: "Gas Consumption"
+      icon: "mdi:meter-gas"
+
+text_sensor:
+  - platform: dsmr
+    identification:
+      name: "Meter Identification"
+      icon: "mdi:counter"
+
+    p1_version:
+      name: "P1 Version"
+      icon: "mdi:information-outline"
+
+    timestamp:
+      name: "Meter Timestamp"
+      icon: "mdi:clock-outline"
+
+    equipment_id:
+      name: "Electricity Meter ID"
+      icon: "mdi:identifier"
+
+    electricity_tariff:
+      name: "Electricity Tariff"
+      icon: "mdi:cash"
+
+    gas_equipment_id:
+      name: "Gas Meter ID"
+      icon: "mdi:meter-gas"
